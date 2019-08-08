@@ -50,6 +50,8 @@ class Search extends React.Component {
 
     clearInput = () => {
         this.setState({ searchInput: '' });
+        this.filterTvSeriesList('', null);
+
     }
 
     categorySelected = (category) => {
@@ -91,6 +93,7 @@ class Search extends React.Component {
         console.log(categoriesActive);
 
         console.log(categoriesActive);
+
         let tempTvSeriesList = this.state.tvSeriesFullList;
 
         if(search !== ""){
