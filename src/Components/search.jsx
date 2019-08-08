@@ -40,11 +40,12 @@ class Search extends React.Component {
         }
 
         this.setState({ categories: categoriesArray });
+        
     }
 
     searchInputChange = (event) => {
         this.setState({ searchInput: event.target.value });
-        this.filterTvSeriesList(event.target.value,null);
+        this.filterTvSeriesList(event.target.value, null);
     }
 
     clearInput = () => {
@@ -65,19 +66,19 @@ class Search extends React.Component {
             return c;
         });
         this.setState({ categories: tempCatList });
-        this.filterTvSeriesList(null , tempCatList);
+        this.filterTvSeriesList(null, tempCatList);
     }
 
     filterTvSeriesList = (searchChanged, categoriesChanged) => {
         let search;
         let currentCategories;
-        if(searchChanged){
+        if (searchChanged) {
             search = searchChanged;
         }
         else {
             search = this.state.searchInput;
         }
-        if(categoriesChanged){
+        if (categoriesChanged) {
             currentCategories = categoriesChanged;
         }
         else {
@@ -89,11 +90,20 @@ class Search extends React.Component {
             .map(cat => cat.category);
         console.log(categoriesActive);
 
-        let tempTvSeriesList = this.state.tvSeriesFullList
-            .filter(tvs => tvs.title.toLowerCase().includes(search.toLowerCase()))
-            .filter(tvs => categoriesActive.includes(tvs.category));
+        console.log(categoriesActive);
+        let tempTvSeriesList = this.state.tvSeriesFullList;
 
-console.log(tempTvSeriesList);
+        if(search !== ""){
+            console.log("aaa");
+            tempTvSeriesList = tempTvSeriesList
+            .filter(tvs => tvs.title.toLowerCase().includes(search.toLowerCase()));
+        }
+
+        if (categoriesActive.length !== 0){
+            tempTvSeriesList =tempTvSeriesList.filter(tvs => categoriesActive.includes(tvs.category));
+        }
+            
+        console.log(tempTvSeriesList);
 
 
 
