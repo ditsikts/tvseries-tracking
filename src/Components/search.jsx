@@ -1,4 +1,6 @@
 import React, { Fragment } from 'react';
+import tvSeries from '../Models/TvSeries';
+
 
 class Search extends React.Component {
 
