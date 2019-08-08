@@ -8,14 +8,13 @@ class TvSeriesCard extends React.Component {
 
     }
     const headerStyles = {
-      bottom:'20px',
-      position: 'absolute'
+      bottom:'20px'
     }
 
     return (
-      <div className="position-relative col-md-3 p-1">
+      <div className="position-relative col-md-3 p-1 ">
         <div style={styles} className="d-flex justify-content-center bg-info">
-          <h4 style={headerStyles}>{this.props.movie.title}</h4>
+          <p style={headerStyles} className="text-center position-absolute">{this.props.movie.title}</p>
         </div>
       </div>
     );
