@@ -16,7 +16,7 @@ class Search extends React.Component {
         };        
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.populateCategories(this.state.tvSeriesFullList);
     }
 
