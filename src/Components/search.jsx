@@ -3,21 +3,27 @@ import TvSeriesCard from './tv-series-card';
 import CategoryTab from './category-tab';
 import CategoryDetail from '../Models/CategoryDetail';
 
-
 class Search extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             searchInput: '',
-            tvSeriesFullList: this.props.tvSeriesList,
-            tvSeriesFilteredList: this.props.tvSeriesList,
-            categories: []
+            tvSeriesFullList: [],
+            tvSeriesFilteredList: [],
+            categories: [],
+            url : 'https://api.myjson.com/bins/13r2gt',
         };        
     }
 
     componentDidMount() {
-        this.populateCategories(this.state.tvSeriesFullList);
+        fetch(this.state.url)
+        .then(response => response.json())
+        .then(data => {
+            this.setState({tvSeriesFullList: data, tvSeriesFilteredList:data });
+            this.populateCategories(this.state.tvSeriesFullList); 
+        });
+        
     }
 
     populateCategories(tvSeriesFullList) {
