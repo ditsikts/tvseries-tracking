@@ -11,7 +11,8 @@ class Search extends React.Component {
             searchInput: '',
             tvSeriesFullList: [],
             tvSeriesFilteredList: [],
-            categories: []
+            categories: [],
+            loading: true
         };        
     }
 
@@ -20,7 +21,12 @@ class Search extends React.Component {
         fetch(url)
         .then(response => response.json())
         .then(data => {
-            this.setState({tvSeriesFullList: data, tvSeriesFilteredList:data });
+            this.setState(
+                {
+                    tvSeriesFullList : data, 
+                    tvSeriesFilteredList : data,
+                    loading : false
+                });
             this.populateCategories( data); 
         });
         console.log("search mount");
@@ -122,6 +128,10 @@ class Search extends React.Component {
     }
 
     render() {
+
+        if(this.state.loading){
+            return <p>Loading</p>
+        }
 
         const tvSeriesCards = this.state.tvSeriesFilteredList.map((m) => <TvSeriesCard movie={m} key={m.id} />);
         const categoriesEl = this.state.categories.map((c) => <CategoryTab key={c.category} handler={this.categorySelected} cat={c} />);
