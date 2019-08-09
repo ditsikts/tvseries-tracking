@@ -11,18 +11,20 @@ class Search extends React.Component {
             searchInput: '',
             tvSeriesFullList: [],
             tvSeriesFilteredList: [],
-            categories: [],
-            url : 'https://api.myjson.com/bins/13r2gt',
+            categories: []
         };        
     }
 
     componentDidMount() {
-        fetch(this.state.url)
+        let url = 'https://api.myjson.com/bins/13r2gt';
+        fetch(url)
         .then(response => response.json())
         .then(data => {
             this.setState({tvSeriesFullList: data, tvSeriesFilteredList:data });
-            this.populateCategories(this.state.tvSeriesFullList); 
+            this.populateCategories( data); 
         });
+        console.log("search mount");
+        
         
     }
 
