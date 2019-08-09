@@ -128,7 +128,9 @@ class Search extends React.Component {
     }
 
     render() {
-
+        let objStyle = {
+            backgroundColor : '#04060F'
+          }
         if(this.state.loading){
             return <p>Loading</p>
         }
@@ -138,7 +140,8 @@ class Search extends React.Component {
 
         return (
             <Fragment>
-                <div className="row d-flex justify-content-center">
+                <div className="container">
+                <div style={objStyle} className="row d-flex justify-content-center pt-3">
                     <div className="input-group mb-3 col-md-6">
                         <input onChange={this.searchInputChange} onKeyUp={this.keyReleased} type="text" className="form-control" value={this.state.searchInput} placeholder="search" aria-label="search" aria-describedby="search for tv series" />
                         <div className="input-group-append">
@@ -151,7 +154,7 @@ class Search extends React.Component {
                 </div>
                 <div className="row">
                     {tvSeriesCards}
-                </div>
+                </div></div>
             </Fragment>
         );
     }
