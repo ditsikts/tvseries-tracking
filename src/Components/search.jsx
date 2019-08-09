@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import tvSeries from '../Models/dump-data';
 import TvSeriesCard from './tv-series-card';
 import CategoryTab from './category-tab';
 import CategoryDetail from '../Models/CategoryDetail';
@@ -7,26 +6,25 @@ import CategoryDetail from '../Models/CategoryDetail';
 
 class Search extends React.Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             searchInput: '',
-            tvSeriesFullList: tvSeries,
-            tvSeriesFilteredList: tvSeries,
+            tvSeriesFullList: this.props.tvSeriesList,
+            tvSeriesFilteredList: this.props.tvSeriesList,
             categories: []
-        };
-
+        };        
     }
 
     componentWillMount() {
         this.populateCategories(this.state.tvSeriesFullList);
     }
 
-    populateCategories(newPropsMovieList) {
+    populateCategories(tvSeriesFullList) {
 
         let categoriesMap = new Map();
         //get categories distinct and how many times find each
-        for (let m of newPropsMovieList) {
+        for (let m of tvSeriesFullList) {
             if (categoriesMap.has(m.category)) {
                 categoriesMap.set(m.category, categoriesMap.get(m.category) + 1);
             }
@@ -35,12 +33,13 @@ class Search extends React.Component {
             }
         }
         let categoriesArray = [];
+        // Convert Map to Array and adding one extra property to track if selected
         for (let [key, value] of categoriesMap) {
             categoriesArray.push(new CategoryDetail(key, value, false));
         }
 
         this.setState({ categories: categoriesArray });
-        
+
     }
 
     searchInputChange = (event) => {
@@ -50,20 +49,16 @@ class Search extends React.Component {
 
     clearInput = () => {
         this.setState({ searchInput: '' });
-        this.filterTvSeriesList('', null);
+        this.filterTvSeriesList('', this.state.categories);
 
     }
 
     categorySelected = (category) => {
         let tempCatList = this.state.categories;
+        // check which category is selected and toggle active boolean
         tempCatList = tempCatList.map(c => {
             if (c.category === category) {
-                if (c.active) {
-                    c.active = false;
-                }
-                else {
-                    c.active = true;
-                }
+                c.active = !c.active;
             }
             return c;
         });
@@ -71,10 +66,20 @@ class Search extends React.Component {
         this.filterTvSeriesList(null, tempCatList);
     }
 
+    //check if input is empty after Delete or Backspace was pressed
+    keyReleased = (event) => {
+        if (event.keyCode === 46 || event.keyCode === 8) {
+            if (this.state.searchInput === '') {
+                this.filterTvSeriesList(null, null);
+            }
+        }
+    }
+
+    //filter list by title and by category passing current changes or gets values from state
     filterTvSeriesList = (searchChanged, categoriesChanged) => {
         let search;
         let currentCategories;
-        if (searchChanged) {
+        if (searchChanged || searchChanged === '') {
             search = searchChanged;
         }
         else {
@@ -87,28 +92,23 @@ class Search extends React.Component {
             currentCategories = this.state.categories;
         }
 
+        //get list of active categories
         let categoriesActive = currentCategories
             .filter(cat => cat.active)
             .map(cat => cat.category);
-        console.log(categoriesActive);
-
-        console.log(categoriesActive);
 
         let tempTvSeriesList = this.state.tvSeriesFullList;
 
-        if(search !== ""){
-            console.log("aaa");
+        // if search input isnt empty use it to filter
+        if (search !== "") {
             tempTvSeriesList = tempTvSeriesList
-            .filter(tvs => tvs.title.toLowerCase().includes(search.toLowerCase()));
+                .filter(tvs => tvs.title.toLowerCase().includes(search.toLowerCase()));
         }
 
-        if (categoriesActive.length !== 0){
-            tempTvSeriesList =tempTvSeriesList.filter(tvs => categoriesActive.includes(tvs.category));
+        //if categories isnt empty use it to filter
+        if (categoriesActive.length !== 0) {
+            tempTvSeriesList = tempTvSeriesList.filter(tvs => categoriesActive.includes(tvs.category));
         }
-            
-        console.log(tempTvSeriesList);
-
-
 
         this.setState({ tvSeriesFilteredList: tempTvSeriesList });
     }
@@ -122,7 +122,7 @@ class Search extends React.Component {
             <Fragment>
                 <div className="row d-flex justify-content-center">
                     <div className="input-group mb-3 col-md-6">
-                        <input onChange={this.searchInputChange} type="text" className="form-control" value={this.state.searchInput} placeholder="search" aria-label="search" aria-describedby="search for tv series" />
+                        <input onChange={this.searchInputChange} onKeyUp={this.keyReleased} type="text" className="form-control" value={this.state.searchInput} placeholder="search" aria-label="search" aria-describedby="search for tv series" />
                         <div className="input-group-append">
                             <button onClick={this.clearInput} className="btn btn-outline-secondary" type="button"><i className="far fa-times-circle"></i></button>
                         </div>
