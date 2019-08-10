@@ -27,15 +27,15 @@ class Search extends React.Component {
                     tvSeriesFilteredList : data,
                     loading : false
                 });
-            this.populateCategories( data); 
+            this.initializeCategories( data); 
         });
         console.log("search mount");
         
         
     }
 
-    populateCategories(tvSeriesFullList) {
-
+    initializeCategories(tvSeriesFullList) {
+        
         let categoriesMap = new Map();
         //get categories distinct and how many times find each
         for (let m of tvSeriesFullList) {
@@ -118,13 +118,50 @@ class Search extends React.Component {
             tempTvSeriesList = tempTvSeriesList
                 .filter(tvs => tvs.title.toLowerCase().includes(search.toLowerCase()));
         }
+        
+        this.populateCategories(tempTvSeriesList);
 
         //if categories isnt empty use it to filter
         if (categoriesActive.length !== 0) {
             tempTvSeriesList = tempTvSeriesList.filter(tvs => categoriesActive.includes(tvs.category));
         }
-
         this.setState({ tvSeriesFilteredList: tempTvSeriesList });
+        
+    }
+
+    populateCategories = (tempTvSeriesList) => {
+        let currentCategories = this.state.categories;
+
+        
+
+        let categoriesMap = new Map();
+        //get categories distinct and how many times find each
+        for (let m of tempTvSeriesList) {
+            if (categoriesMap.has(m.category)) {
+                categoriesMap.set(m.category, categoriesMap.get(m.category) + 1);
+            }
+            else {
+                categoriesMap.set(m.category, 1);
+            }
+        }
+        let categoriesArray = [];
+        // Convert Map to Array and adding one extra property to track if selected
+        for (let [key, value] of categoriesMap) {
+            categoriesArray.push(new CategoryDetail(key, value, false));
+        }
+
+        categoriesArray = categoriesArray.map(
+            (cat) => {
+                let index = currentCategories.map(c => c.category).indexOf(cat.category);
+                // let index = currentCategories.category.indexOf(cat.category);
+                if(index !== -1){                    
+                    cat.active = currentCategories[index].active;
+                }
+                return cat;
+
+            }
+        );
+        this.setState({categories : categoriesArray});
     }
 
     render() {
