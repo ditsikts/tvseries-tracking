@@ -11,7 +11,7 @@ class InsertTvSeries extends React.Component {
       backgroundColor: '#C1403D'
     };
     let stylebtn = {
-      backgroundColor: '#0294A5'
+      background: '#0294A5'
     }
     return (
       <div className="container">
@@ -32,7 +32,7 @@ class InsertTvSeries extends React.Component {
                 </div>
               </div>
               <div className="d-flex justify-content-end">
-                <button style={stylebtn} type="submit" className="btn btn-primary">Save</button>
+                <button style={stylebtn} type="submit" className="btn btn-primary border">Save</button>
               </div>
             </form>
           </div>

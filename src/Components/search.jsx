@@ -35,11 +35,10 @@ class Search extends React.Component {
 
     }
 
-    initializeCategories(tvSeriesFullList) {
-
+    generateCategories = (tvSeriesList) => {
         let categoriesMap = new Map();
         //get categories distinct and how many times find each
-        for (let m of tvSeriesFullList) {
+        for (let m of tvSeriesList) {
             if (categoriesMap.has(m.category)) {
                 categoriesMap.set(m.category, categoriesMap.get(m.category) + 1);
             }
@@ -52,6 +51,12 @@ class Search extends React.Component {
         for (let [key, value] of categoriesMap) {
             categoriesArray.push(new CategoryDetail(key, value, false));
         }
+        return categoriesArray;
+    }
+
+    initializeCategories(tvSeriesFullList) {
+
+        const categoriesArray = this.generateCategories(tvSeriesFullList);
 
         this.setState({ categories: categoriesArray });
 
@@ -94,6 +99,8 @@ class Search extends React.Component {
     filterTvSeriesList = (searchChanged, categoriesChanged) => {
         let search;
         let currentCategories;
+
+        //check if we have new input or get from state
         if (searchChanged || searchChanged === '') {
             search = searchChanged;
         }
@@ -131,35 +138,18 @@ class Search extends React.Component {
     }
 
     populateCategories = (tempTvSeriesList) => {
-        let currentCategories = this.state.categories;
+        const currentCategories = this.state.categories;
 
+        let categoriesArray = this.generateCategories(tempTvSeriesList);
 
-
-        let categoriesMap = new Map();
-        //get categories distinct and how many times find each
-        for (let m of tempTvSeriesList) {
-            if (categoriesMap.has(m.category)) {
-                categoriesMap.set(m.category, categoriesMap.get(m.category) + 1);
-            }
-            else {
-                categoriesMap.set(m.category, 1);
-            }
-        }
-        let categoriesArray = [];
-        // Convert Map to Array and adding one extra property to track if selected
-        for (let [key, value] of categoriesMap) {
-            categoriesArray.push(new CategoryDetail(key, value, false));
-        }
-
+        // we copy active property from state.categories which has previous state
         categoriesArray = categoriesArray.map(
             (cat) => {
                 let index = currentCategories.map(c => c.category).indexOf(cat.category);
-                // let index = currentCategories.category.indexOf(cat.category);
                 if (index !== -1) {
                     cat.active = currentCategories[index].active;
                 }
                 return cat;
-
             }
         );
         this.setState({ categories: categoriesArray });
