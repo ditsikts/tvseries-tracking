@@ -97,15 +97,15 @@ class Search extends React.Component {
 
     //filter list by title and by category passing current changes or gets values from state
     filterTvSeriesList = (searchChanged, categoriesChanged) => {
-        let search;
+        let currentSearch;
         let currentCategories;
 
         //check if we have new input or get from state
         if (searchChanged || searchChanged === '') {
-            search = searchChanged;
+            currentSearch = searchChanged;
         }
         else {
-            search = this.state.searchInput;
+            currentSearch = this.state.searchInput;
         }
         if (categoriesChanged) {
             currentCategories = categoriesChanged;
@@ -114,28 +114,26 @@ class Search extends React.Component {
             currentCategories = this.state.categories;
         }
 
-        // get list of active categories
-        const categoriesActive = currentCategories
-            .filter(cat => cat.active)
-            .map(cat => cat.category);
-
-        // let catAct 
-        // const categoriesActive = currentCategories.reduce(
-        //     (  cat) =>{
-        //         if(cat.active){
-        //             catAct.push(cat.category);
-        //         }
-        //         return catAct;
-        //     },catAct);
+        //get active categories for easier filtering
+        const categoriesActive = currentCategories.reduce(
+            (acc,  cat) =>{
+                if(cat.active){
+                    acc.push(cat.category);
+                }
+                return acc;
+            }, []);
 
         let tempTvSeriesList = this.state.tvSeriesFullList;
 
         // if search input isnt empty use it to filter
-        if (search !== "") {
+        if (currentSearch !== "") {
             tempTvSeriesList = tempTvSeriesList
-                .filter(tvs => tvs.title.toLowerCase().includes(search.toLowerCase()));
+                .filter(tvs => tvs.title.toLowerCase().includes(currentSearch.toLowerCase()));
         }
 
+        //we have to set state.categories before filter tvseries
+        //by categories because will return only active categories
+        //but we want all categories match with input search
         this.populateCategories(tempTvSeriesList);
 
         //if categories isnt empty use it to filter
