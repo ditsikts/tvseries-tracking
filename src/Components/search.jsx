@@ -114,10 +114,19 @@ class Search extends React.Component {
             currentCategories = this.state.categories;
         }
 
-        //get list of active categories
-        let categoriesActive = currentCategories
+        // get list of active categories
+        const categoriesActive = currentCategories
             .filter(cat => cat.active)
             .map(cat => cat.category);
+
+        // let catAct 
+        // const categoriesActive = currentCategories.reduce(
+        //     (  cat) =>{
+        //         if(cat.active){
+        //             catAct.push(cat.category);
+        //         }
+        //         return catAct;
+        //     },catAct);
 
         let tempTvSeriesList = this.state.tvSeriesFullList;
 
