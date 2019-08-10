@@ -10,11 +10,13 @@ class CategoryTab extends React.Component {
         let style;
         if (this.props.cat.active) {
             style = {
-                backgroundColor: 'peru'
+                backgroundColor: '#0294A5'
             };
         }
         else {
-            style = {};
+            style = {
+                backgroundColor : '#C1403D'
+            };
         }
 
 

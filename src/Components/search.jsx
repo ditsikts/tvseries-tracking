@@ -168,6 +168,15 @@ class Search extends React.Component {
         let objStyle = {
             backgroundColor : '#04060F'
           }
+          let cards = {
+            backgroundColor : '#A79C93'
+          }
+          
+          let cat = {
+            // backgroundColor : '#C1403D'
+            
+            backgroundColor : '#A79C93'
+          }
         if(this.state.loading){
             return <p>Loading</p>
         }
@@ -186,10 +195,10 @@ class Search extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="row">
+                <div style={cat} className="row">
                     {categoriesEl}
                 </div>
-                <div className="row">
+                <div style={cards} className="row">
                     {tvSeriesCards}
                 </div></div>
             </Fragment>
