@@ -150,6 +150,7 @@ class Search extends React.Component {
         let categoriesArray = this.generateCategories(tempTvSeriesList);
 
         // we copy active property from state.categories which has previous state
+        // for not losing which category is clicked
         categoriesArray = categoriesArray.map(
             (cat) => {
                 let index = currentCategories.map(c => c.category).indexOf(cat.category);
@@ -187,7 +188,9 @@ class Search extends React.Component {
                 <main className="container">
                     <div style={objStyle} className="row d-flex justify-content-center pt-3">
                         <div className="input-group mb-3 col-md-6">
-                            <input onChange={this.searchInputChange} onKeyUp={this.keyReleased} type="text" className="form-control" value={this.state.searchInput} placeholder="search" aria-label="search" aria-describedby="search for tv series" />
+                            <input onChange={this.searchInputChange} onKeyUp={this.keyReleased} type="text" 
+                                className="form-control" value={this.state.searchInput} placeholder="search" 
+                                aria-label="search" aria-describedby="search for tv series" />
                             <div className="input-group-append">
                                 <button onClick={this.clearInput} className="btn btn-outline-secondary" type="button"><i className="far fa-times-circle"></i></button>
                             </div>
