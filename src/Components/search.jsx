@@ -114,7 +114,7 @@ class Search extends React.Component {
             currentCategories = this.state.categories;
         }
 
-        //get active categories for easier filtering
+        //get active categories(only property category) for easier filtering
         const categoriesActive = currentCategories.reduce(
             (acc,  cat) =>{
                 if(cat.active){
