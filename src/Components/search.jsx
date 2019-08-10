@@ -17,8 +17,8 @@ class Search extends React.Component {
     }
 
     componentDidMount() {
-        let url = 'http://localhost:8080/api/tvseries';
-        // let url = 'https://api.myjson.com/bins/13r2gt';
+        // let url = 'http://localhost:8080/api/tvseries';
+        let url = 'https://api.myjson.com/bins/13r2gt';
         fetch(url)
         .then(response => response.json())
         .then(data => {
