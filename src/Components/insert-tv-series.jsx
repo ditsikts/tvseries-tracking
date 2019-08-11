@@ -12,8 +12,18 @@ class InsertTvSeries extends React.Component {
   }
 
   handleSubmit = (event) => {
-    console.log('A name was submitted:', this.state.title, this.state.category);
     event.preventDefault();
+
+    const url = 'http://localhost:8080/api/tvseries';
+    fetch(url, {
+      method: 'POST', // or 'PUT'
+      // mode: 'cors',
+      body: JSON.stringify({title : this.state.title,category: this.state.category }), // data can be `string` or {object}!
+      headers:{'Content-Type': 'application/json'}
+    })
+    .then(res => res.json())
+    .then(response => console.log('Success:', JSON.stringify(response)))
+    .catch(error => console.error('Error:', error));
   }
 
   handleTitleChange = (event) => {

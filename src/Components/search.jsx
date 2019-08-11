@@ -17,8 +17,8 @@ class Search extends React.Component {
     }
 
     componentDidMount() {
-        // let url = 'http://localhost:8080/api/tvseries';
-        let url = 'https://api.myjson.com/bins/13r2gt';
+        const url = 'http://localhost:8080/api/tvseries';
+        // let const = 'https://api.myjson.com/bins/13r2gt';
         fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -31,8 +31,6 @@ class Search extends React.Component {
                 this.initializeCategories(data);
             });
         console.log("search mount");
-
-
     }
 
     generateCategories = (tvSeriesList) => {
