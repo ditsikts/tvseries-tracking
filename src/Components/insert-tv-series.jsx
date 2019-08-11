@@ -1,12 +1,14 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 class InsertTvSeries extends React.Component {
 
   constructor() {
     super();
     this.state = {
-      title : '',
-      category : ''
+      title: '',
+      category: '',
+      redirect: false
     };
 
   }
@@ -18,20 +20,23 @@ class InsertTvSeries extends React.Component {
     fetch(url, {
       method: 'POST', // or 'PUT'
       // mode: 'cors',
-      body: JSON.stringify({title : this.state.title,category: this.state.category }), // data can be `string` or {object}!
-      headers:{'Content-Type': 'application/json'}
+      body: JSON.stringify({ title: this.state.title, category: this.state.category }), // data can be `string` or {object}!
+      headers: { 'Content-Type': 'application/json' }
     })
-    .then(res => res.json())
-    .then(response => console.log('Success:', JSON.stringify(response)))
-    .catch(error => console.error('Error:', error));
+      .then(res => res.json())
+      .then(response => {
+        console.log('Success:', JSON.stringify(response))
+        this.setState({ redirect: true });
+      })
+      .catch(error => console.error('Error:', error));
   }
 
   handleTitleChange = (event) => {
-    this.setState({title: event.target.value});
+    this.setState({ title: event.target.value });
   }
 
   handleCategoryChange = (event) => {
-    this.setState({category: event.target.value});
+    this.setState({ category: event.target.value });
   }
 
   render() {
@@ -45,6 +50,11 @@ class InsertTvSeries extends React.Component {
     let stylebtn = {
       background: '#0294A5'
     }
+
+    if(this.state.redirect){
+      return <Redirect to='/' />
+    }
+
     return (
       <div className="container">
         <div style={style} className="row justify-content-center">
