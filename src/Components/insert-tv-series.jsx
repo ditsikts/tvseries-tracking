@@ -16,17 +16,22 @@ class InsertTvSeries extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-
+    let tvSeries = {
+      title: this.state.title,
+      status: this.state.status,
+      categories : [
+        {id : this.state.categories[0]},
+        {id : this.state.categories[1]},
+        {id : this.state.categories[2]}
+      ]
+    };
+    console.log(tvSeries);
+    
     const url = 'http://localhost:8080/api/tvseries';
     fetch(url, {
       method: 'POST', // or 'PUT'
       // mode: 'cors',
-      body: JSON.stringify(
-        {
-          title: this.state.title,
-          status: this.state.status,
-          categories: this.state.categories,
-        }), // data can be `string` or {object}!
+      body: JSON.stringify(tvSeries), // data can be `string` or {object}!
       headers: { 'Content-Type': 'application/json' }
     })
       .then(res => res.json())
@@ -53,8 +58,6 @@ class InsertTvSeries extends React.Component {
         value.push(options[i].value);
       }
     }
-    console.log(value);
-    
     this.setState({ categories: value });
   }
 
