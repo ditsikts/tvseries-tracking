@@ -37,11 +37,13 @@ class Search extends React.Component {
         let categoriesMap = new Map();
         //get categories distinct and how many times find each
         for (let m of tvSeriesList) {
-            if (categoriesMap.has(m.category)) {
-                categoriesMap.set(m.category, categoriesMap.get(m.category) + 1);
-            }
-            else {
-                categoriesMap.set(m.category, 1);
+            for (let c of m.categories) {
+                if (categoriesMap.has(c.category)) {
+                    categoriesMap.set(c.category, categoriesMap.get(c.category) + 1);
+                }
+                else {
+                    categoriesMap.set(c.category, 1);
+                }
             }
         }
         let categoriesArray = [];
@@ -114,8 +116,8 @@ class Search extends React.Component {
 
         //get active categories(only property category) for easier filtering
         const categoriesActive = currentCategories.reduce(
-            (acc,  cat) =>{
-                if(cat.active){
+            (acc, cat) => {
+                if (cat.active) {
                     acc.push(cat.category);
                 }
                 return acc;
@@ -136,7 +138,18 @@ class Search extends React.Component {
 
         //if categories isnt empty use it to filter
         if (categoriesActive.length !== 0) {
-            tempTvSeriesList = tempTvSeriesList.filter(tvs => categoriesActive.includes(tvs.category));
+            //we search tvs.categories array, if once match -> break to avoid doubles triples
+            tempTvSeriesList = tempTvSeriesList.reduce(
+                (acc, tvs) => {
+                    for ( let c of tvs.categories){
+                        if (categoriesActive.includes(c.category)){
+                            acc.push(tvs);
+                            break;
+                        }
+                    }
+                    return acc;
+                }
+            , []);
         }
         this.setState({ tvSeriesFilteredList: tempTvSeriesList });
 
@@ -186,8 +199,8 @@ class Search extends React.Component {
                 <main className="container">
                     <div style={objStyle} className="row d-flex justify-content-center pt-3">
                         <div className="input-group mb-3 col-md-6">
-                            <input onChange={this.searchInputChange} onKeyUp={this.keyReleased} type="text" 
-                                className="form-control" value={this.state.searchInput} placeholder="search" 
+                            <input onChange={this.searchInputChange} onKeyUp={this.keyReleased} type="text"
+                                className="form-control" value={this.state.searchInput} placeholder="search"
                                 aria-label="search" aria-describedby="search for tv series" />
                             <div className="input-group-append">
                                 <button onClick={this.clearInput} className="btn btn-outline-secondary" type="button"><i className="far fa-times-circle"></i></button>
