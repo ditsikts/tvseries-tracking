@@ -7,7 +7,8 @@ class InsertTvSeries extends React.Component {
     super();
     this.state = {
       title: '',
-      category: '',
+      status: '',
+      categories: [],
       redirect: false
     };
 
@@ -20,7 +21,12 @@ class InsertTvSeries extends React.Component {
     fetch(url, {
       method: 'POST', // or 'PUT'
       // mode: 'cors',
-      body: JSON.stringify({ title: this.state.title, category: this.state.category }), // data can be `string` or {object}!
+      body: JSON.stringify(
+        {
+          title: this.state.title,
+          status: this.state.status,
+          categories: this.state.categories,
+        }), // data can be `string` or {object}!
       headers: { 'Content-Type': 'application/json' }
     })
       .then(res => res.json())
@@ -35,8 +41,21 @@ class InsertTvSeries extends React.Component {
     this.setState({ title: event.target.value });
   }
 
-  handleCategoryChange = (event) => {
-    this.setState({ category: event.target.value });
+  handleStatusChange = (event) => {
+    this.setState({ status: event.target.value });
+  }
+
+  handleCategoriesChange = (event) => {
+    let options = event.target.options;
+    let value = [];
+    for (let i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+    console.log(value);
+    
+    this.setState({ categories: value });
   }
 
   render() {
@@ -51,7 +70,7 @@ class InsertTvSeries extends React.Component {
       background: '#0294A5'
     }
 
-    if(this.state.redirect){
+    if (this.state.redirect) {
       return <Redirect to='/' />
     }
 
@@ -68,9 +87,23 @@ class InsertTvSeries extends React.Component {
                 </div>
               </div>
               <div className="form-group row">
-                <label htmlFor="tv_series_category" className="col-sm-2 col-form-label">Category</label>
+                <label htmlFor="tv_series_status" className="col-sm-2 col-form-label" >Status</label>
                 <div className="col-sm-10">
-                  <input type="text" value={this.state.category} onChange={this.handleCategoryChange} className="form-control" id="tv_series_category" />
+                  <select value={this.state.status} onChange={this.handleStatusChange} className="form-control" id="tv_series_status">
+                    <option value="Ongoing">Ongoing</option>
+                    <option value="Ended">Ended</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                </div>
+              </div>
+              <div className="form-group row">
+                <label htmlFor="tv_series_category1" className="col-sm-2 col-form-label">Categories</label>
+                <div className="col-sm-10">
+                  <select value={this.state.categories} onChange={this.handleCategoriesChange} className="form-control" id="tv_series_category1" multiple >
+                    <option value="5">Drama</option>
+                    <option value="1">Crime</option>
+                    <option value="4">Horror</option>
+                  </select>
                 </div>
               </div>
               <div className="d-flex justify-content-end">
