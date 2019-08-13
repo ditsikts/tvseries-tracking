@@ -9,24 +9,38 @@ class InsertTvSeries extends React.Component {
       title: '',
       status: '',
       categories: [],
+      selectCategories: [],
       redirect: false
     };
 
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault();
+  componentDidMount() {
+    const url = 'http://localhost:8080/api/categories';
+    // const url = 'https://api.myjson.com/bins/qp5vv';
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({ selectCategories : data });
+      });
+  }
+
+  prepareFormInput = () => {
+    let categories = [];
+    for (let c of this.state.categories) {
+      categories.push({ id: c });
+    }
     let tvSeries = {
       title: this.state.title,
       status: this.state.status,
-      categories : [
-        {id : this.state.categories[0]},
-        {id : this.state.categories[1]},
-        {id : this.state.categories[2]}
-      ]
+      categories: categories
     };
-    console.log(tvSeries);
-    
+    return tvSeries;
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const tvSeries = this.prepareFormInput();
     const url = 'http://localhost:8080/api/tvseries';
     fetch(url, {
       method: 'POST', // or 'PUT'
@@ -62,8 +76,10 @@ class InsertTvSeries extends React.Component {
   }
 
   render() {
-
-    let style = {
+    const selectCategories = this.state.selectCategories.map(
+      catObj => <option value={catObj.id} key={catObj.id}>{catObj.category}</option>);
+    
+      let style = {
       backgroundColor: '#A79C93'
     };
     let styleform = {
@@ -103,9 +119,7 @@ class InsertTvSeries extends React.Component {
                 <label htmlFor="tv_series_category1" className="col-sm-2 col-form-label">Categories</label>
                 <div className="col-sm-10">
                   <select value={this.state.categories} onChange={this.handleCategoriesChange} className="form-control" id="tv_series_category1" multiple >
-                    <option value="5">Drama</option>
-                    <option value="1">Crime</option>
-                    <option value="4">Horror</option>
+                    {selectCategories}
                   </select>
                 </div>
               </div>
