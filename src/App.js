@@ -1,5 +1,5 @@
 import React from 'react';
-import MainMenu from './Components/main-menu';
+import MainMenu from './Components/MainMenu/main-menu';
 
 function App() {
   return (

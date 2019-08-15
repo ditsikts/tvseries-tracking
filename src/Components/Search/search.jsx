@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
-import TvSeriesCard from './tv-series-card';
-import CategoryTab from './category-tab';
-import CategoryDetail from '../Models/CategoryDetail';
+import TvSeriesCard from '../tv-series-card';
+import CategoryTab from '../CategoryTab/category-tab';
+import CategoryDetail from '../../Models/CategoryDetail';
+import './search.css';
 
 class Search extends React.Component {
 
@@ -17,8 +18,8 @@ class Search extends React.Component {
     }
 
     componentDidMount() {
-        const url = 'http://localhost:8080/api/tvseries';
-        // const url = 'https://api.myjson.com/bins/qp5vv';
+        // const url = 'http://localhost:8080/api/tvseries';
+        const url = 'https://api.myjson.com/bins/qp5vv';
         fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -175,18 +176,7 @@ class Search extends React.Component {
     }
 
     render() {
-        let objStyle = {
-            backgroundColor: '#04060F'
-        }
-        let cards = {
-            backgroundColor: '#A79C93'
-        }
 
-        let cat = {
-            // backgroundColor : '#C1403D'
-
-            backgroundColor: '#A79C93'
-        }
         if (this.state.loading) {
             return <p>Loading</p>
         }
@@ -197,7 +187,7 @@ class Search extends React.Component {
         return (
             <Fragment>
                 <main className="container">
-                    <div style={objStyle} className="row d-flex justify-content-center pt-3">
+                    <div className="searchContainer row d-flex justify-content-center pt-3">
                         <div className="input-group mb-3 col-md-6">
                             <input onChange={this.searchInputChange} onKeyUp={this.keyReleased} type="text"
                                 className="form-control" value={this.state.searchInput} placeholder="search"
@@ -207,10 +197,10 @@ class Search extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div style={cat} className="row">
+                    <div className="row categoryTabsContainer">
                         {categoriesEl}
                     </div>
-                    <div style={cards} className="row">
+                    <div className="row tvCardsContainer">
                         {tvSeriesCards}
                     </div>
                 </main>

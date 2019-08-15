@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
-class InsertTvSeries extends React.Component {
+class ManageTvSeries extends React.Component {
 
   constructor() {
     super();
@@ -134,4 +134,4 @@ class InsertTvSeries extends React.Component {
   }
 }
 
-export default InsertTvSeries;
+export default ManageTvSeries;
