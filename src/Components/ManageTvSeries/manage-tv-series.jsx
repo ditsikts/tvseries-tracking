@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import './manage-tv-series.css';
 
 class ManageTvSeries extends React.Component {
 
@@ -78,16 +79,6 @@ class ManageTvSeries extends React.Component {
   render() {
     const selectCategories = this.state.selectCategories.map(
       catObj => <option value={catObj.id} key={catObj.id}>{catObj.category}</option>);
-    
-      let style = {
-      backgroundColor: '#A79C93'
-    };
-    let styleform = {
-      backgroundColor: '#C1403D'
-    };
-    let stylebtn = {
-      background: '#0294A5'
-    }
 
     if (this.state.redirect) {
       return <Redirect to='/' />
@@ -95,8 +86,8 @@ class ManageTvSeries extends React.Component {
 
     return (
       <div className="container">
-        <div style={style} className="row justify-content-center">
-          <div style={styleform} className="col-md-6 mt-5 mb-5 rounded p-3">
+        <div className="row justify-content-center containerColor">
+          <div className="col-md-6 mt-5 mb-5 rounded p-3 formColor">
             <h2 className="mb-3">Insert new series</h2>
             <form onSubmit={this.handleSubmit}>
               <div className="form-group row">
@@ -124,7 +115,7 @@ class ManageTvSeries extends React.Component {
                 </div>
               </div>
               <div className="d-flex justify-content-end">
-                <button style={stylebtn} type="submit" className="btn btn-primary border">Save</button>
+                <button type="submit" className="btn btn-primary border btnColor">Save</button>
               </div>
             </form>
           </div>

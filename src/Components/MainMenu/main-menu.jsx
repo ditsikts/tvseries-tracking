@@ -1,7 +1,7 @@
 import React from 'react';
 import Search from '../Search/search';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import ManageTvSeries from '../manage-tv-series';
+import ManageTvSeries from '../ManageTvSeries/manage-tv-series';
 import './main-menu.css';
 
 class MainMenu extends React.Component {

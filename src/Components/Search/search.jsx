@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import TvSeriesCard from '../tv-series-card';
+import TvSeriesCard from '../TvSeriesCard/tv-series-card';
 import CategoryTab from '../CategoryTab/category-tab';
 import CategoryDetail from '../../Models/CategoryDetail';
 import './search.css';
