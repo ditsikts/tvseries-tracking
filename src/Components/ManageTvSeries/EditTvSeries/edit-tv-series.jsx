@@ -1,129 +1,49 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import InsertTvSeries from '../InsertTvSeries/insert-tv-series';
 import './edit-tv-series.css';
 
 class EditTvSeries extends React.Component {
 
-    constructor() {
-      super();
-      this.state = {
-        title: '',
-        status: '',
-        categories: [],
-        selectCategories: [],
-        redirect: false
-      };
-  
-    }
-    
-  componentDidMount() {
-    const url = 'http://localhost:8080/api/categories';
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({ selectCategories: data });
-      });
-  }
-
-  prepareFormInput = () => {
-    let categories = [];
-    const categoriesSelected = this.state.categories;
-    if (categoriesSelected.length < 1 || categoriesSelected.length > 3) {
-      alert("Please Choose betweent 1 to 3 Categories!");
-      return null;
-    }
-    for (let c of this.state.categories) {
-      categories.push({ id: c });
-    }
-    let tvSeries = {
-      title: this.state.title,
-      status: this.state.status,
-      categories: categories
+  constructor() {
+    super();
+    this.state = {
+      searchInput : '',
+      header: '',
+      tvSeriesList : [],
+      selectedTvSeries : {}
     };
-    return tvSeries;
+
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    const tvSeries = this.prepareFormInput();
-    const url = 'http://localhost:8080/api/tvseries';
-    if (tvSeries !== null) {
-      fetch(url, {
-        method: 'POST', // or 'PUT'
-        // mode: 'cors',
-        body: JSON.stringify(tvSeries), // data can be `string` or {object}!
-        headers: { 'Content-Type': 'application/json' }
-      })
-        .then(res => res.json())
-        .then(response => {
-          console.log('Success:', JSON.stringify(response))
-          this.setState({ redirect: true });
-        })
-        .catch(error => console.error('Error:', error));
-    }
-  }
-
-  handleTitleChange = (event) => {
-    this.setState({ title: event.target.value });
-  }
-
-  handleStatusChange = (event) => {
-    this.setState({ status: event.target.value });
-  }
-
-  handleCategoriesChange = (event) => {
-    let options = event.target.options;
-    let value = [];
-    for (let i = 0, l = options.length; i < l; i++) {
-      if (options[i].selected) {
-        value.push(options[i].value);
+  keyReleased = (event) => {
+    if (event.keyCode === 46 || event.keyCode === 8) {
+      if (this.state.searchInput === '') {
+        this.filterTvSeriesList(null, null);
       }
     }
-    this.setState({ categories: value });
   }
-
+  searchInputChange = (event) => {
+    this.setState({ searchInput: event.target.value });
+    this.filterTvSeriesList(event.target.value, null);
+}
   render() {
-    const selectCategories = this.state.selectCategories.map(
-      catObj => <option value={catObj.id} key={catObj.id}>{catObj.category}</option>);
-
-    if (this.state.redirect) {
-      return <Redirect to='/' />
-    }
 
     return (
-          <div className="col-md-8 mt-5 mb-5 rounded p-3 formColor">
-
-            <h2 className="mb-3">Edit TV Series</h2>
-            <form onSubmit={this.handleSubmit}>
-              <div className="form-group row">
-                <label htmlFor="tv_series_title" className="col-sm-3 col-form-label">Title</label>
-                <div className="col-sm-9">
-                  <input type="text" value={this.state.title} onChange={this.handleTitleChange} className="form-control" id="tv_series_title" />
-                </div>
-              </div>
-              <div className="form-group row">
-                <label htmlFor="tv_series_status" className="col-sm-3 col-form-label" >Status</label>
-                <div className="col-sm-9">
-                  <select value={this.state.status} onChange={this.handleStatusChange} className="form-control" id="tv_series_status">
-                    <option value="Ongoing">Ongoing</option>
-                    <option value="Ended">Ended</option>
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
-                </div>
-              </div>
-              <div className="form-group row">
-                <label htmlFor="tv_series_category1" className="col-sm-3 col-form-label">Categories</label>
-                <div className="col-sm-9">
-                  <select value={this.state.categories} onChange={this.handleCategoriesChange} className="form-control" id="tv_series_category1" multiple >
-                    {selectCategories}
-                  </select>
-                </div>
-              </div>
-              <div className="d-flex justify-content-end">
-                <button type="submit" className="btn btn-primary border btnColor">Save</button>
-              </div>
-            </form>
+      <div className="col">
+        <div className="searchContainer row d-flex justify-content-center pt-3">
+          <div className="input-group mb-3 col-md-6">
+            <input onKeyUp={this.keyReleased} type="text" onChange={this.searchInputChange}
+              className="form-control" value={this.state.searchInput} placeholder="search"
+              aria-label="search" aria-describedby="search for tv series" />
+            <div className="input-group-append">
+              <button onClick={this.clearInput} className="btn btn-outline-secondary" type="button"><i className="far fa-times-circle"></i></button>
+            </div>
           </div>
+        </div>
+        <div className="row d-flex justify-content-center">
+          <InsertTvSeries tvSeries={null} />
+        </div>
+      </div>
     );
   }
 }

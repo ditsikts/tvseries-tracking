@@ -4,18 +4,27 @@ import './insert-tv-series.css';
 
 class InsertTvSeries extends React.Component {
 
-    constructor() {
-      super();
-      this.state = {
-        title: '',
-        status: '',
-        categories: [],
-        selectCategories: [],
-        redirect: false
-      };
-  
+  constructor(props) {
+    super(props);
+    let tempid = '', temptitle = '', tempstatus = '', tempcategories = [];
+
+    if (this.props.tvSeries){
+      tempid = this.props.tvSeries.id;
+      temptitle = this.props.tvSeries.title;
+      tempstatus = this.props.tvSeries.status;
+      tempcategories = this.props.tvSeries.categories.map(c => c.id);
     }
-    
+    this.state = {
+      id : tempid,
+      title: temptitle,
+      status: tempstatus,
+      categories: tempcategories,
+      selectCategories: [],
+      redirect: false
+    };
+
+  }
+
   componentDidMount() {
     const url = 'http://localhost:8080/api/categories';
     fetch(url)
@@ -36,6 +45,7 @@ class InsertTvSeries extends React.Component {
       categories.push({ id: c });
     }
     let tvSeries = {
+      id: this.state.id,
       title: this.state.title,
       status: this.state.status,
       categories: categories
@@ -87,43 +97,43 @@ class InsertTvSeries extends React.Component {
       catObj => <option value={catObj.id} key={catObj.id}>{catObj.category}</option>);
 
     if (this.state.redirect) {
-      return <Redirect to='/' />
+      return <Redirect to='/manage/' />
     }
 
     return (
-          <div className="col-md-8 mt-5 mb-5 rounded p-3 formColor">
+      <div className="col-md-8 mt-5 mb-5 rounded p-3 formColor">
 
-            <h2 className="mb-3">Insert new series</h2>
-            <form onSubmit={this.handleSubmit}>
-              <div className="form-group row">
-                <label htmlFor="tv_series_title" className="col-sm-3 col-form-label">Title</label>
-                <div className="col-sm-9">
-                  <input type="text" value={this.state.title} onChange={this.handleTitleChange} className="form-control" id="tv_series_title" />
-                </div>
-              </div>
-              <div className="form-group row">
-                <label htmlFor="tv_series_status" className="col-sm-3 col-form-label" >Status</label>
-                <div className="col-sm-9">
-                  <select value={this.state.status} onChange={this.handleStatusChange} className="form-control" id="tv_series_status">
-                    <option value="Ongoing">Ongoing</option>
-                    <option value="Ended">Ended</option>
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
-                </div>
-              </div>
-              <div className="form-group row">
-                <label htmlFor="tv_series_category1" className="col-sm-3 col-form-label">Categories</label>
-                <div className="col-sm-9">
-                  <select value={this.state.categories} onChange={this.handleCategoriesChange} className="form-control" id="tv_series_category1" multiple >
-                    {selectCategories}
-                  </select>
-                </div>
-              </div>
-              <div className="d-flex justify-content-end">
-                <button type="submit" className="btn btn-primary border btnColor">Save</button>
-              </div>
-            </form>
+        <h2 className="mb-3">Insert new series</h2>
+        <form onSubmit={this.handleSubmit}>
+          <div className="form-group row">
+            <label htmlFor="tv_series_title" className="col-sm-3 col-form-label">Title</label>
+            <div className="col-sm-9">
+              <input type="text" value={this.state.title} onChange={this.handleTitleChange} className="form-control" id="tv_series_title" />
+            </div>
           </div>
+          <div className="form-group row">
+            <label htmlFor="tv_series_status" className="col-sm-3 col-form-label" >Status</label>
+            <div className="col-sm-9">
+              <select value={this.state.status} onChange={this.handleStatusChange} className="form-control" id="tv_series_status">
+                <option value="Ongoing">Ongoing</option>
+                <option value="Ended">Ended</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+          <div className="form-group row">
+            <label htmlFor="tv_series_category1" className="col-sm-3 col-form-label">Categories</label>
+            <div className="col-sm-9">
+              <select value={this.state.categories} onChange={this.handleCategoriesChange} className="form-control" id="tv_series_category1" multiple >
+                {selectCategories}
+              </select>
+            </div>
+          </div>
+          <div className="d-flex justify-content-end">
+            <button type="submit" className="btn btn-primary border btnColor">Save</button>
+          </div>
+        </form>
+      </div>
     );
   }
 }
