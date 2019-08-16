@@ -3,7 +3,6 @@ import MainMenu from './Components/MainMenu/main-menu';
 
 function App() {
   return (
-    
       <MainMenu />
   );
 }

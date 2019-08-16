@@ -1,8 +1,8 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import './insert-tv-series.css';
+import './edit-tv-series.css';
 
-class InsertTvSeries extends React.Component {
+class EditTvSeries extends React.Component {
 
     constructor() {
       super();
@@ -93,7 +93,7 @@ class InsertTvSeries extends React.Component {
     return (
           <div className="col-md-8 mt-5 mb-5 rounded p-3 formColor">
 
-            <h2 className="mb-3">Insert new series</h2>
+            <h2 className="mb-3">Edit TV Series</h2>
             <form onSubmit={this.handleSubmit}>
               <div className="form-group row">
                 <label htmlFor="tv_series_title" className="col-sm-3 col-form-label">Title</label>
@@ -128,4 +128,4 @@ class InsertTvSeries extends React.Component {
   }
 }
 
-export default InsertTvSeries;
+export default EditTvSeries;
