@@ -22,12 +22,17 @@ class ManageTvSeries extends React.Component {
     fetch(url)
       .then(response => response.json())
       .then(data => {
-        this.setState({ selectCategories : data });
+        this.setState({ selectCategories: data });
       });
   }
 
   prepareFormInput = () => {
     let categories = [];
+    const categoriesSelected = this.state.categories;
+    if (categoriesSelected.length < 1 || categoriesSelected.length > 3) {
+      alert("Please Choose betweent 1 to 3 Categories!");
+      return null;
+    }
     for (let c of this.state.categories) {
       categories.push({ id: c });
     }
@@ -43,18 +48,20 @@ class ManageTvSeries extends React.Component {
     event.preventDefault();
     const tvSeries = this.prepareFormInput();
     const url = 'http://localhost:8080/api/tvseries';
-    fetch(url, {
-      method: 'POST', // or 'PUT'
-      // mode: 'cors',
-      body: JSON.stringify(tvSeries), // data can be `string` or {object}!
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(res => res.json())
-      .then(response => {
-        console.log('Success:', JSON.stringify(response))
-        this.setState({ redirect: true });
+    if (tvSeries !== null) {
+      fetch(url, {
+        method: 'POST', // or 'PUT'
+        // mode: 'cors',
+        body: JSON.stringify(tvSeries), // data can be `string` or {object}!
+        headers: { 'Content-Type': 'application/json' }
       })
-      .catch(error => console.error('Error:', error));
+        .then(res => res.json())
+        .then(response => {
+          console.log('Success:', JSON.stringify(response))
+          this.setState({ redirect: true });
+        })
+        .catch(error => console.error('Error:', error));
+    }
   }
 
   handleTitleChange = (event) => {
@@ -84,9 +91,29 @@ class ManageTvSeries extends React.Component {
       return <Redirect to='/' />
     }
 
+    const style = {
+      height: '5px'
+    }
+    const styleHor = {
+      width : '5px',
+      height: '30px'
+    }
     return (
       <div className="container">
-        <div className="row justify-content-center containerColor">
+        <div className="row containerColor">
+          <aside className="col-md-3 bg-warning">
+
+            <div className="row d-flex justify-content-center">
+              <h3 className="pt-3">TV Series</h3>
+            </div>
+            <div className="row d-flex justify-content-center">
+              <div style={style} className="bg-info w-75"></div>
+            </div>
+            <div className="row d-flex justify-content-center">
+              <a href="">Insert</a> <div style={styleHor} className="bg-info "></div><a href="">Edit</a>
+            </div>
+
+          </aside>
           <div className="col-md-6 mt-5 mb-5 rounded p-3 formColor">
             <h2 className="mb-3">Insert new series</h2>
             <form onSubmit={this.handleSubmit}>
