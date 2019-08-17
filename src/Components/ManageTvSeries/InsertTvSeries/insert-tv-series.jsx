@@ -6,13 +6,14 @@ class InsertTvSeries extends React.Component {
 
   constructor(props) {
     super(props);
-    let tempid = '', temptitle = '', tempstatus = '', tempcategories = [];
+    let tempid = '', temptitle = '', tempstatus = '', tempcategories = [], tempheader = 'Insert Tv Series';
 
     if (this.props.tvSeries){
       tempid = this.props.tvSeries.id;
       temptitle = this.props.tvSeries.title;
       tempstatus = this.props.tvSeries.status;
       tempcategories = this.props.tvSeries.categories.map(c => c.id);
+      tempheader = 'Edit Tv Series';
     }
     this.state = {
       id : tempid,
@@ -20,6 +21,7 @@ class InsertTvSeries extends React.Component {
       status: tempstatus,
       categories: tempcategories,
       selectCategories: [],
+      header : tempheader,
       redirect: false
     };
 
@@ -103,7 +105,7 @@ class InsertTvSeries extends React.Component {
     return (
       <div className="col-md-8 mt-5 mb-5 rounded p-3 formColor">
 
-        <h2 className="mb-3">Insert new series</h2>
+        <h2 className="mb-3">{this.state.header}</h2>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group row">
             <label htmlFor="tv_series_title" className="col-sm-3 col-form-label">Title</label>
