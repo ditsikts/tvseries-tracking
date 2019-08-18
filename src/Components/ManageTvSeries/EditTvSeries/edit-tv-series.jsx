@@ -38,11 +38,20 @@ class EditTvSeries extends React.Component {
       });
   }
 
+  tvSeriesClicked = (event) => {
+    let cid = Number(event.currentTarget.id);
+
+    let tvSeries = this.state.tvSeriesList.find(tvS => tvS.id === cid);
+    this.setState({selectedTvSeries : tvSeries});
+    console.log(tvSeries);
+    
+  } 
+
   searchInputChange = (event) => {
     this.setState({ searchInput: event.target.value });
   }
   render() {
-    const tvSeriesFound = this.state.tvSeriesList.map(tvS => <li key={tvS.id}>{tvS.id} {tvS.title}</li>);
+    const tvSeriesFound = this.state.tvSeriesList.map(tvS => <li onClick={this.tvSeriesClicked} key={tvS.id} id={tvS.id} >{tvS.title}</li>);
 
     return (
       <div className="col">
@@ -55,7 +64,7 @@ class EditTvSeries extends React.Component {
         </div>
         <div className="row">
           <div className="col-md-8">
-            <InsertTvSeries tvSeries={null} />
+            <InsertTvSeries tvSeries={this.state.selectedTvSeries} />
           </div>
           <div className="col-md-4">
             <ul>

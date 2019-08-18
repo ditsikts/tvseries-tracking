@@ -7,8 +7,11 @@ class InsertTvSeries extends React.Component {
   constructor(props) {
     super(props);
     let tempid = '', temptitle = '', tempstatus = '', tempcategories = [], tempheader = 'Insert Tv Series';
-
-    if (this.props.tvSeries){
+    console.log("out");
+    
+    if (Object.getOwnPropertyNames(this.props.tvSeries).length !== 0){
+      console.log("inner");
+      
       tempid = this.props.tvSeries.id;
       temptitle = this.props.tvSeries.title;
       tempstatus = this.props.tvSeries.status;
