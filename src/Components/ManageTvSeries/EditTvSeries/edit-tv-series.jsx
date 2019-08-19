@@ -1,19 +1,27 @@
 import React from 'react';
 import './edit-tv-series.css';
 import {getCategories} from '../../../Service/TvSeriesApi';
+import TvSeriesForm from '../TvSeriesForm/tv-series-form';
 
 class EditTvSeries extends React.Component {
 
   constructor() {
     super();
     this.state = {
+      tvSeries : {
+        id : '',
+        title: '',
+        status: '',
+        categories: [],
+      },
       id : '',
       title: '',
       status: '',
       categories: [],
       searchInput: '',
       tvSeriesList: [],
-      selectCategories: []
+      selectCategories: [],
+      header : 'Edit TV Series'
     };
   }
 
@@ -70,12 +78,13 @@ class EditTvSeries extends React.Component {
     let cid = Number(event.currentTarget.id);
 
     let tvSeries = this.state.tvSeriesList.find(tvS => tvS.id === cid);
+    tvSeries.categories = tvSeries.categories.map(c => c.id);
+    console.log(tvSeries);
+    console.log("clicked");
+    
     this.setState(
       { 
-        title: tvSeries.title,
-        status:tvSeries.status,
-        id: tvSeries.id,
-        categories: tvSeries.categories.map(c => c.id)
+        tvSeries: tvSeries
       });
 
   }
@@ -118,6 +127,11 @@ class EditTvSeries extends React.Component {
         .catch(error => console.error('Error:', error));
     }
   }
+
+  getFormInput = (newTvSeries) => {
+    // this.submitForm(newTvSeries);
+    
+  }
   render() {
     const selectCategories = this.state.selectCategories.map(
       catObj => <option value={catObj.id} key={catObj.id}>{catObj.category}</option>);
@@ -134,7 +148,8 @@ class EditTvSeries extends React.Component {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-8 mt-5 mb-5 rounded p-3 formColor">
+          <TvSeriesForm tvSeries={this.state.tvSeries} header={this.state.header} handler={this.getFormInput} />
+          {/* <div className="col-md-8 mt-5 mb-5 rounded p-3 formColor">
             <h2 className="mb-3">Edit Tv Series</h2>
             <form onSubmit={this.handleSubmit}>
               <div className="form-group row">
@@ -165,7 +180,7 @@ class EditTvSeries extends React.Component {
                 <button type="submit" className="btn btn-primary border btnColor">Save</button>
               </div>
             </form>
-          </div>
+          </div> */}
           <div className="col-md-4">
             <ul>
               {tvSeriesFound}

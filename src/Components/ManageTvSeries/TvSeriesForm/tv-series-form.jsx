@@ -67,6 +67,7 @@ class TvSeriesForm extends React.Component {
     render() {
         const selectCategories = this.state.selectCategories.map(
             catObj => <option value={catObj.id} key={catObj.id}>{catObj.category}</option>);
+console.log(this.props.tvSeries);
 
         return (
             <div className="col-md-8 mt-5 mb-5 rounded p-3 formColor">
