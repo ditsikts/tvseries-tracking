@@ -1,39 +1,27 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import './insert-tv-series.css';
+import {getCategories} from '../../../Service/TvSeriesApi';
 
 class InsertTvSeries extends React.Component {
 
-  constructor(props) {
-    super(props);
-    let tempid = '', temptitle = '', tempstatus = '', tempcategories = [], tempheader = 'Insert Tv Series';
-    console.log("out");
-    
-    if (Object.getOwnPropertyNames(this.props.tvSeries).length !== 0){
-      console.log("inner");
-      
-      tempid = this.props.tvSeries.id;
-      temptitle = this.props.tvSeries.title;
-      tempstatus = this.props.tvSeries.status;
-      tempcategories = this.props.tvSeries.categories.map(c => c.id);
-      tempheader = 'Edit Tv Series';
-    }
+  constructor() {
+    super();
+
     this.state = {
-      id : tempid,
-      title: temptitle,
-      status: tempstatus,
-      categories: tempcategories,
+      id : '',
+      title: '',
+      status: '',
+      categories: [],
       selectCategories: [],
-      header : tempheader,
+      header : '',
       redirect: false
     };
 
   }
 
   componentDidMount() {
-    const url = 'http://localhost:8080/api/categories';
-    fetch(url)
-      .then(response => response.json())
+    getCategories()
       .then(data => {
         this.setState({ selectCategories: data });
       });
@@ -47,6 +35,7 @@ class InsertTvSeries extends React.Component {
       return null;
     }
     for (let c of this.state.categories) {
+      //we create key(id) value(select input) Category object
       categories.push({ id: c });
     }
     let tvSeries = {
@@ -108,7 +97,7 @@ class InsertTvSeries extends React.Component {
     return (
       <div className="col-md-8 mt-5 mb-5 rounded p-3 formColor">
 
-        <h2 className="mb-3">{this.state.header}</h2>
+        <h2 className="mb-3">Insert Tv Series</h2>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group row">
             <label htmlFor="tv_series_title" className="col-sm-3 col-form-label">Title</label>
