@@ -26,25 +26,7 @@ class EditTvSeries extends React.Component {
         this.setState({ selectCategories: data });
       });
   }
-  prepareFormInput = () => {
-    let categories = [];
-    const categoriesSelected = this.state.categories;
-    if (categoriesSelected.length < 1 || categoriesSelected.length > 3) {
-      alert("Please Choose betweent 1 to 3 Categories!");
-      return null;
-    }
-    for (let c of this.state.categories) {
-      //we create key(id) value(select input) Category object
-      categories.push({ id: c });
-    }
-    let tvSeries = {
-      id: this.state.id,
-      title: this.state.title,
-      status: this.state.status,
-      categories: categories
-    };
-    return tvSeries;
-  }
+
   keyReleased = (event) => {
     if (event.keyCode === 13) {
       const search = this.state.searchInput;
@@ -80,26 +62,10 @@ class EditTvSeries extends React.Component {
       });
 
   }
-  handleTitleChange = (event) => {
-    this.setState({ title: event.target.value });
-  }
-
-  handleStatusChange = (event) => {
-    this.setState({ status: event.target.value });
-  }
   searchInputChange = (event) => {
     this.setState({ searchInput: event.target.value });
   }
-  handleCategoriesChange = (event) => {
-    let options = event.target.options;
-    let value = [];
-    for (let i = 0, l = options.length; i < l; i++) {
-      if (options[i].selected) {
-        value.push(options[i].value);
-      }
-    }
-    this.setState({ categories: value });
-  }
+  
   submitForm = (tvSeries) => {
     const url = 'http://localhost:8080/api/tvseries';
     if (tvSeries !== null) {
