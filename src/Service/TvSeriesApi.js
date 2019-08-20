@@ -1,6 +1,6 @@
-export function getCategories (signal) {
+export function getCategories () {
     const url = 'http://localhost:8080/api/categories';
-    return fetch(url, {signal})
+    return fetch(url)
       .then(response => response.json());
 }
 
@@ -24,8 +24,7 @@ export function saveOrUpdateTvSeries(tvSeries){
     method = 'PUT';
   }
   return fetch(url, {
-    method: method, // or 'PUT'
-    // mode: 'cors',
+    method: method,
     body: JSON.stringify(tvSeries), // data can be `string` or {object}!
     headers: { 'Content-Type': 'application/json' }
   })
