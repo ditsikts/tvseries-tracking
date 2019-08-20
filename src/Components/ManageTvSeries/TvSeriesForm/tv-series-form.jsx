@@ -1,8 +1,10 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import './tv-series-form.css';
 import { getCategories } from '../../../Service/TvSeriesApi';
 
 class TvSeriesForm extends React.Component {
+    abortController = new window.AbortController();
     constructor(props) {
         super(props);
 
@@ -12,23 +14,27 @@ class TvSeriesForm extends React.Component {
             status: '',
             categories: [],
             selectCategories: [],
+            redirect: false
         };
 
     }
     
     componentDidMount() {
-        getCategories()
+        const signal = this.abortController.signal;
+        getCategories( signal )
             .then(data => {
                 this.setState({ selectCategories: data });
+
             });
     }
+
     componentDidUpdate(prevProps, prevState) {
         if (this.props.tvSeries !== prevProps.tvSeries) {
             this.newTvSeries(this.props.tvSeries);
         }
     }
     newTvSeries = (tvSeries) => {
-                
+
         this.setState({
             id: tvSeries.id,
             title: tvSeries.title,
@@ -55,6 +61,8 @@ class TvSeriesForm extends React.Component {
                 categories: categories
             };
         }
+        this.abortController.abort();
+        this.setState({ redirect: true });
         this.props.handler(tvSeries);
     }
 
@@ -79,9 +87,12 @@ class TvSeriesForm extends React.Component {
 
     render() {
 
+
         const selectCategories = this.state.selectCategories.map(
             catObj => <option value={catObj.id} key={catObj.id}>{catObj.category}</option>);
-
+        if (this.state.redirect) {
+            return <Redirect to='/manage/' />
+        }
         return (
             <div className="col-md-8 mt-5 mb-5 rounded p-3 formColor">
 

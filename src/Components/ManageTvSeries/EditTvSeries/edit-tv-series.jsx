@@ -1,6 +1,6 @@
 import React from 'react';
 import './edit-tv-series.css';
-import {findTvSeriesByTitle, getCategories, updateTvSeries } from '../../../Service/TvSeriesApi';
+import {findTvSeriesByTitle, getCategories, saveOrUpdateTvSeries } from '../../../Service/TvSeriesApi';
 import TvSeriesForm from '../TvSeriesForm/tv-series-form';
 
 class EditTvSeries extends React.Component {
@@ -66,7 +66,7 @@ class EditTvSeries extends React.Component {
 
   submitForm = (tvSeries) => {
     if (tvSeries !== null) {
-      updateTvSeries(tvSeries)
+      saveOrUpdateTvSeries(tvSeries)
         .then(data => {
           console.log('Success:', JSON.stringify(data))
           this.setState({ redirect: true });

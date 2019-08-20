@@ -1,8 +1,7 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import './insert-tv-series.css';
 import TvSeriesForm from '../TvSeriesForm/tv-series-form';
-import { saveTvSeries } from '../../../Service/TvSeriesApi';
+import { saveOrUpdateTvSeries } from '../../../Service/TvSeriesApi';
 class InsertTvSeries extends React.Component {
 
   constructor() {
@@ -17,14 +16,13 @@ class InsertTvSeries extends React.Component {
       },
       selectCategories: [],
       header : 'Insert TV Series',
-      redirect: false
     };
 
   }
 
   submitForm = (newTvSeries) => {
     if (newTvSeries !== null) {
-      saveTvSeries(newTvSeries)
+      saveOrUpdateTvSeries(newTvSeries)
         .then(data => {
           console.log('Success:', JSON.stringify(data))
           this.setState({ redirect: true });
@@ -39,10 +37,6 @@ class InsertTvSeries extends React.Component {
   }
 
   render() {
-
-    if (this.state.redirect) {
-      return <Redirect to='/manage/' />
-    }
 
     return (
       <TvSeriesForm tvSeries={this.state.tvSeries} header={this.state.header} handler={this.getFormInput} />

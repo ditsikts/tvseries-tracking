@@ -1,7 +1,14 @@
-export function getCategories () {
+export function getCategories (signal) {
     const url = 'http://localhost:8080/api/categories';
-    return fetch(url)
+    return fetch(url, {signal})
       .then(response => response.json());
+}
+
+export function findAllTvSeries(){
+  const url = 'http://localhost:8080/api/tvseries';
+  // const url = 'https://api.myjson.com/bins/qp5vv';
+  return fetch(url)
+      .then(response => response.json())
 }
 
 export function findTvSeriesByTitle(search){
@@ -10,24 +17,39 @@ export function findTvSeriesByTitle(search){
     .then(response => response.json())
 }
 
-export function saveTvSeries(newTvSeries){
+export function saveOrUpdateTvSeries(tvSeries){
   const url = 'http://localhost:8080/api/tvseries';
-    return fetch(url, {
-      method: 'POST', // or 'PUT'
-      // mode: 'cors',
-      body: JSON.stringify(newTvSeries), // data can be `string` or {object}!
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(respond => respond.json());
+  let method = 'POST';
+  if (tvSeries.id.length !== 0){
+    method = 'PUT';
+  }
+  return fetch(url, {
+    method: method, // or 'PUT'
+    // mode: 'cors',
+    body: JSON.stringify(tvSeries), // data can be `string` or {object}!
+    headers: { 'Content-Type': 'application/json' }
+  })
+    .then(respond => respond.json());
 }
 
-export function updateTvSeries(tvSeries) {
-  const url = 'http://localhost:8080/api/tvseries';
-    return fetch(url, {
-      method: 'PUT', // or 'PUT'
-      // mode: 'cors',
-      body: JSON.stringify(tvSeries), // data can be `string` or {object}!
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(respond => respond.json())
-}
+// export function saveTvSeries(newTvSeries){
+//   const url = 'http://localhost:8080/api/tvseries';
+//     return fetch(url, {
+//       method: 'POST', // or 'PUT'
+//       // mode: 'cors',
+//       body: JSON.stringify(newTvSeries), // data can be `string` or {object}!
+//       headers: { 'Content-Type': 'application/json' }
+//     })
+//       .then(respond => respond.json());
+// }
+
+// export function updateTvSeries(tvSeries) {
+//   const url = 'http://localhost:8080/api/tvseries';
+//     return fetch(url, {
+//       method: 'PUT', // or 'PUT'
+//       // mode: 'cors',
+//       body: JSON.stringify(tvSeries), // data can be `string` or {object}!
+//       headers: { 'Content-Type': 'application/json' }
+//     })
+//       .then(respond => respond.json())
+// }

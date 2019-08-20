@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import TvSeriesCard from '../TvSeriesCard/tv-series-card';
 import CategoryTab from '../CategoryTab/category-tab';
 import CategoryDetail from '../../Models/CategoryDetail';
+import { findAllTvSeries } from '../../Service/TvSeriesApi';
 import './search.css';
 
 class Search extends React.Component {
@@ -18,10 +19,7 @@ class Search extends React.Component {
     }
 
     componentDidMount() {
-        const url = 'http://localhost:8080/api/tvseries';
-        // const url = 'https://api.myjson.com/bins/qp5vv';
-        fetch(url)
-            .then(response => response.json())
+        findAllTvSeries()
             .then(data => {
                 this.setState(
                     {
