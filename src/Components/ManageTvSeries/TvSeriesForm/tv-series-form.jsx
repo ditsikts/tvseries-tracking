@@ -7,22 +7,35 @@ class TvSeriesForm extends React.Component {
         super(props);
 
         this.state = {
-            id: this.props.tvSeries.id,
-            title: this.props.tvSeries.title,
-            status: this.props.tvSeries.status,
-            categories: this.props.tvSeries.categories,
+            id: '',
+            title: '',
+            status: '',
+            categories: [],
             selectCategories: [],
         };
 
     }
-
+    
     componentDidMount() {
         getCategories()
             .then(data => {
                 this.setState({ selectCategories: data });
             });
     }
-
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.tvSeries !== prevProps.tvSeries) {
+            this.newTvSeries(this.props.tvSeries);
+        }
+    }
+    newTvSeries = (tvSeries) => {
+                
+        this.setState({
+            id: tvSeries.id,
+            title: tvSeries.title,
+            status: tvSeries.status,
+            categories: tvSeries.categories
+        });
+    }
     prepareFormInput = () => {
         let categories = [];
         let tvSeries = null;
@@ -65,9 +78,9 @@ class TvSeriesForm extends React.Component {
     }
 
     render() {
+
         const selectCategories = this.state.selectCategories.map(
             catObj => <option value={catObj.id} key={catObj.id}>{catObj.category}</option>);
-console.log(this.props.tvSeries);
 
         return (
             <div className="col-md-8 mt-5 mb-5 rounded p-3 formColor">

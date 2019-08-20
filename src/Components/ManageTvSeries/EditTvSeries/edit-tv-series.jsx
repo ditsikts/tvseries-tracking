@@ -14,13 +14,8 @@ class EditTvSeries extends React.Component {
         status: '',
         categories: [],
       },
-      id : '',
-      title: '',
-      status: '',
-      categories: [],
       searchInput: '',
       tvSeriesList: [],
-      selectCategories: [],
       header : 'Edit TV Series'
     };
   }
@@ -79,9 +74,6 @@ class EditTvSeries extends React.Component {
 
     let tvSeries = this.state.tvSeriesList.find(tvS => tvS.id === cid);
     tvSeries.categories = tvSeries.categories.map(c => c.id);
-    console.log(tvSeries);
-    console.log("clicked");
-    
     this.setState(
       { 
         tvSeries: tvSeries
@@ -108,9 +100,7 @@ class EditTvSeries extends React.Component {
     }
     this.setState({ categories: value });
   }
-  handleSubmit = (event) => {
-    event.preventDefault();
-    const tvSeries = this.prepareFormInput();
+  submitForm = (tvSeries) => {
     const url = 'http://localhost:8080/api/tvseries';
     if (tvSeries !== null) {
       fetch(url, {
@@ -128,13 +118,11 @@ class EditTvSeries extends React.Component {
     }
   }
 
-  getFormInput = (newTvSeries) => {
-    // this.submitForm(newTvSeries);
+  getFormInput = (updatedTvSeries) => {
+    this.submitForm(updatedTvSeries);
     
   }
   render() {
-    const selectCategories = this.state.selectCategories.map(
-      catObj => <option value={catObj.id} key={catObj.id}>{catObj.category}</option>);
 
     const tvSeriesFound = this.state.tvSeriesList.map(tvS => <li onClick={this.tvSeriesClicked} key={tvS.id} id={tvS.id} >{tvS.title}</li>);
 
