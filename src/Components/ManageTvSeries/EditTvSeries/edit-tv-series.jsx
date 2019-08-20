@@ -1,6 +1,6 @@
 import React from 'react';
 import './edit-tv-series.css';
-import {getCategories} from '../../../Service/TvSeriesApi';
+import {findTvSeriesByTitle, getCategories, updateTvSeries } from '../../../Service/TvSeriesApi';
 import TvSeriesForm from '../TvSeriesForm/tv-series-form';
 
 class EditTvSeries extends React.Component {
@@ -8,15 +8,15 @@ class EditTvSeries extends React.Component {
   constructor() {
     super();
     this.state = {
-      tvSeries : {
-        id : '',
+      tvSeries: {
+        id: '',
         title: '',
         status: '',
         categories: [],
       },
       searchInput: '',
       tvSeriesList: [],
-      header : 'Edit TV Series'
+      header: 'Edit TV Series'
     };
   }
 
@@ -40,9 +40,7 @@ class EditTvSeries extends React.Component {
   }
 
   searchDb = (search) => {
-    const url = 'http://localhost:8080/api/tvseries/' + search;
-    fetch(url)
-      .then(response => response.json())
+    findTvSeriesByTitle(search)
       .then(data => {
         this.setState(
           {
@@ -57,7 +55,7 @@ class EditTvSeries extends React.Component {
     let tvSeries = this.state.tvSeriesList.find(tvS => tvS.id === cid);
     tvSeries.categories = tvSeries.categories.map(c => c.id);
     this.setState(
-      { 
+      {
         tvSeries: tvSeries
       });
 
@@ -65,19 +63,12 @@ class EditTvSeries extends React.Component {
   searchInputChange = (event) => {
     this.setState({ searchInput: event.target.value });
   }
-  
+
   submitForm = (tvSeries) => {
-    const url = 'http://localhost:8080/api/tvseries';
     if (tvSeries !== null) {
-      fetch(url, {
-        method: 'PUT', // or 'PUT'
-        // mode: 'cors',
-        body: JSON.stringify(tvSeries), // data can be `string` or {object}!
-        headers: { 'Content-Type': 'application/json' }
-      })
-        .then(res => res.json())
-        .then(response => {
-          console.log('Success:', JSON.stringify(response))
+      updateTvSeries(tvSeries)
+        .then(data => {
+          console.log('Success:', JSON.stringify(data))
           this.setState({ redirect: true });
         })
         .catch(error => console.error('Error:', error));
@@ -86,7 +77,7 @@ class EditTvSeries extends React.Component {
 
   getFormInput = (updatedTvSeries) => {
     this.submitForm(updatedTvSeries);
-    
+
   }
   render() {
 

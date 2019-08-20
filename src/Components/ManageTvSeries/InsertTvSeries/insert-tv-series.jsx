@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import './insert-tv-series.css';
 import TvSeriesForm from '../TvSeriesForm/tv-series-form';
-
+import { saveTvSeries } from '../../../Service/TvSeriesApi';
 class InsertTvSeries extends React.Component {
 
   constructor() {
@@ -23,17 +23,10 @@ class InsertTvSeries extends React.Component {
   }
 
   submitForm = (newTvSeries) => {
-    const url = 'http://localhost:8080/api/tvseries';
     if (newTvSeries !== null) {
-      fetch(url, {
-        method: 'POST', // or 'PUT'
-        // mode: 'cors',
-        body: JSON.stringify(newTvSeries), // data can be `string` or {object}!
-        headers: { 'Content-Type': 'application/json' }
-      })
-        .then(res => res.json())
-        .then(response => {
-          console.log('Success:', JSON.stringify(response))
+      saveTvSeries(newTvSeries)
+        .then(data => {
+          console.log('Success:', JSON.stringify(data))
           this.setState({ redirect: true });
         })
         .catch(error => console.error('Error:', error));
