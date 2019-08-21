@@ -2,6 +2,7 @@ import React from 'react';
 import './edit-tv-series.css';
 import { findTvSeriesByTitle, getCategories, saveOrUpdateTvSeries, deleteTvSeries } from '../../../Service/TvSeriesApi';
 import TvSeriesForm from '../TvSeriesForm/tv-series-form';
+import TvSeriesTab from './TvSeriesTab/tv-series-tab';
 
 class EditTvSeries extends React.Component {
 
@@ -49,10 +50,8 @@ class EditTvSeries extends React.Component {
       });
   }
 
-  editTvSeriesClicked = (event) => {
-    let cid = Number(event.currentTarget.parentElement.id);
-
-    let tvSeries = this.state.tvSeriesList.find(tvS => tvS.id === cid);
+  editTvSeriesClicked = (id) => {
+    let tvSeries = this.state.tvSeriesList.find(tvS => tvS.id === id);
     tvSeries.categories = tvSeries.categories.map(c => c.id);
     this.setState(
       {
@@ -61,9 +60,8 @@ class EditTvSeries extends React.Component {
 
   }
 
-  deleteTvSeriesClicked = (event) => {
-    let cid = Number(event.currentTarget.parentElement.id);
-    deleteTvSeries(cid)
+  deleteTvSeriesClicked = (id) => {
+    deleteTvSeries(id)
       .then(data => {
         console.log('Success:', data)
       })
@@ -88,18 +86,24 @@ class EditTvSeries extends React.Component {
     this.submitForm(updatedTvSeries);
 
   }
+
+  tabHandler = (action, id) => {
+    if (action === 'delete') {
+      this.deleteTvSeriesClicked(id);
+    }
+    else if (action === 'edit') {
+      this.editTvSeriesClicked(id);
+    }
+    else {
+      console.log("Unknown action!");
+    }
+  }
+
   render() {
 
     const tvSeriesFound = this.state.tvSeriesList.map(tvS =>
-      <div className="tvSeriesTab col-md-3 mt-1 p-1 rounded" key={tvS.id} >
-        <div className="btnColor p-2 ">
-          <p className="mb-0">{tvS.title}</p>
-          <div  id={tvS.id} className="d-flex justify-content-between rounded border-0 ">
-            <p onClick={this.editTvSeriesClicked} className="btn btn-warning ">edit</p>
-            <p onClick={this.deleteTvSeriesClicked} className="btn btn-danger">delete</p>
-          </div>
-        </div>
-      </div>);
+      <TvSeriesTab id={tvS.id} title={tvS.title} handler={this.tabHandler} key={tvS.id} />
+    );
 
     return (
       <div className="col">
