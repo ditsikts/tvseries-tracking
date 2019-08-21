@@ -1,6 +1,6 @@
 import React from 'react';
 import './edit-tv-series.css';
-import {findTvSeriesByTitle, getCategories, saveOrUpdateTvSeries } from '../../../Service/TvSeriesApi';
+import { findTvSeriesByTitle, getCategories, saveOrUpdateTvSeries, deleteTvSeries } from '../../../Service/TvSeriesApi';
 import TvSeriesForm from '../TvSeriesForm/tv-series-form';
 
 class EditTvSeries extends React.Component {
@@ -49,8 +49,8 @@ class EditTvSeries extends React.Component {
       });
   }
 
-  tvSeriesClicked = (event) => {
-    let cid = Number(event.currentTarget.id);
+  editTvSeriesClicked = (event) => {
+    let cid = Number(event.currentTarget.parentElement.id);
 
     let tvSeries = this.state.tvSeriesList.find(tvS => tvS.id === cid);
     tvSeries.categories = tvSeries.categories.map(c => c.id);
@@ -60,6 +60,16 @@ class EditTvSeries extends React.Component {
       });
 
   }
+
+  deleteTvSeriesClicked = (event) => {
+    let cid = Number(event.currentTarget.parentElement.id);
+    deleteTvSeries(cid)
+      .then(data => {
+        console.log('Success:', data)
+      })
+      .catch(error => console.error('Error:', error));
+  }
+
   searchInputChange = (event) => {
     this.setState({ searchInput: event.target.value });
   }
@@ -69,7 +79,6 @@ class EditTvSeries extends React.Component {
       saveOrUpdateTvSeries(tvSeries)
         .then(data => {
           console.log('Success:', JSON.stringify(data))
-          this.setState({ redirect: true });
         })
         .catch(error => console.error('Error:', error));
     }
@@ -81,7 +90,16 @@ class EditTvSeries extends React.Component {
   }
   render() {
 
-    const tvSeriesFound = this.state.tvSeriesList.map(tvS => <li onClick={this.tvSeriesClicked} key={tvS.id} id={tvS.id} >{tvS.title}</li>);
+    const tvSeriesFound = this.state.tvSeriesList.map(tvS =>
+      <div className="tvSeriesTab col-md-3 mt-1 p-1 rounded" key={tvS.id} >
+        <div className="btnColor p-2 ">
+          <p className="mb-0">{tvS.title}</p>
+          <div  id={tvS.id} className="d-flex justify-content-between rounded border-0 ">
+            <p onClick={this.editTvSeriesClicked} className="btn btn-warning ">edit</p>
+            <p onClick={this.deleteTvSeriesClicked} className="btn btn-danger">delete</p>
+          </div>
+        </div>
+      </div>);
 
     return (
       <div className="col">
@@ -93,44 +111,13 @@ class EditTvSeries extends React.Component {
           </div>
         </div>
         <div className="row">
+          {tvSeriesFound}
+
+        </div>
+        <div className="row">
           <TvSeriesForm tvSeries={this.state.tvSeries} header={this.state.header} handler={this.getFormInput} />
-          {/* <div className="col-md-8 mt-5 mb-5 rounded p-3 formColor">
-            <h2 className="mb-3">Edit Tv Series</h2>
-            <form onSubmit={this.handleSubmit}>
-              <div className="form-group row">
-                <label htmlFor="tv_series_title" className="col-sm-3 col-form-label">Title</label>
-                <div className="col-sm-9">
-                  <input type="text" value={this.state.title} onChange={this.handleTitleChange} className="form-control" id="tv_series_title" />
-                </div>
-              </div>
-              <div className="form-group row">
-                <label htmlFor="tv_series_status" className="col-sm-3 col-form-label" >Status</label>
-                <div className="col-sm-9">
-                  <select value={this.state.status} onChange={this.handleStatusChange} className="form-control" id="tv_series_status">
-                    <option value="Ongoing">Ongoing</option>
-                    <option value="Ended">Ended</option>
-                    <option value="Cancelled">Cancelled</option>
-                  </select>
-                </div>
-              </div>
-              <div className="form-group row">
-                <label htmlFor="tv_series_category1" className="col-sm-3 col-form-label">Categories</label>
-                <div className="col-sm-9">
-                  <select value={this.state.categories} onChange={this.handleCategoriesChange} className="form-control" id="tv_series_category1" multiple >
-                    {selectCategories}
-                  </select>
-                </div>
-              </div>
-              <div className="d-flex justify-content-end">
-                <button type="submit" className="btn btn-primary border btnColor">Save</button>
-              </div>
-            </form>
-          </div> */}
-          <div className="col-md-4">
-            <ul>
-              {tvSeriesFound}
-            </ul>
-          </div>
+
+
         </div>
       </div>
     );
