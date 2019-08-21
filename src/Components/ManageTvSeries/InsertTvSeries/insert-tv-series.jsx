@@ -40,7 +40,6 @@ class InsertTvSeries extends React.Component {
 
     return (
       <TvSeriesForm tvSeries={this.state.tvSeries} header={this.state.header} handler={this.getFormInput} />
-
     );
   }
 }

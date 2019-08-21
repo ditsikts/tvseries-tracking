@@ -1,5 +1,6 @@
 import React from 'react';
 import './edit-tv-series.css';
+import { Redirect } from 'react-router-dom'
 import { findTvSeriesByTitle, getCategories, saveOrUpdateTvSeries, deleteTvSeries } from '../../../Service/TvSeriesApi';
 import TvSeriesForm from '../TvSeriesForm/tv-series-form';
 import TvSeriesTab from './TvSeriesTab/tv-series-tab';
@@ -17,7 +18,8 @@ class EditTvSeries extends React.Component {
       },
       searchInput: '',
       tvSeriesList: [],
-      header: 'Edit TV Series'
+      header: 'Edit TV Series',
+      redirect : false
     };
   }
 
@@ -63,7 +65,8 @@ class EditTvSeries extends React.Component {
   deleteTvSeriesClicked = (id) => {
     deleteTvSeries(id)
       .then(data => {
-        console.log('Success:', data)
+        console.log('Success:', data);
+        this.setState({redirect : true});
       })
       .catch(error => console.error('Error:', error));
   }
@@ -76,7 +79,8 @@ class EditTvSeries extends React.Component {
     if (tvSeries !== null) {
       saveOrUpdateTvSeries(tvSeries)
         .then(data => {
-          console.log('Success:', JSON.stringify(data))
+          console.log('Success:', JSON.stringify(data));
+          this.setState({redirect : true});
         })
         .catch(error => console.error('Error:', error));
     }
@@ -101,6 +105,9 @@ class EditTvSeries extends React.Component {
 
   render() {
 
+    if (this.state.redirect) {
+      return <Redirect to='/manage/' />
+    }
     const tvSeriesFound = this.state.tvSeriesList.map(tvS =>
       <TvSeriesTab id={tvS.id} title={tvS.title} handler={this.tabHandler} key={tvS.id} />
     );
@@ -116,12 +123,9 @@ class EditTvSeries extends React.Component {
         </div>
         <div className="row">
           {tvSeriesFound}
-
         </div>
-        <div className="row">
+        <div className="row d-flex justify-content-center">
           <TvSeriesForm tvSeries={this.state.tvSeries} header={this.state.header} handler={this.getFormInput} />
-
-
         </div>
       </div>
     );
