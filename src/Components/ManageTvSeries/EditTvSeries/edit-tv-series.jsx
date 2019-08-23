@@ -59,7 +59,6 @@ class EditTvSeries extends React.Component {
       {
         tvSeries: tvSeries
       });
-
   }
 
   deleteTvSeriesClicked = (id) => {
@@ -88,7 +87,6 @@ class EditTvSeries extends React.Component {
 
   getFormInput = (updatedTvSeries) => {
     this.submitForm(updatedTvSeries);
-
   }
 
   tabHandler = (action, id) => {
