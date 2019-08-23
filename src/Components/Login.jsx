@@ -30,6 +30,15 @@ class Login extends Component {
     };
 
     render() {
+        const jwt = sessionStorage.getItem("jwt");
+        const base64Url = jwt.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        console.log(JSON.parse(jsonPayload));
+        
+
         if (this.state.isAuthenticated === true) {
             return (<h1>Loggedin</h1>)
         }

@@ -15,7 +15,6 @@ class InsertTvSeries extends React.Component {
         categories: [],
       },
       selectCategories: [],
-      header : 'Insert TV Series',
     };
 
   }
@@ -39,7 +38,7 @@ class InsertTvSeries extends React.Component {
   render() {
 
     return (
-      <TvSeriesForm tvSeries={this.state.tvSeries} header={this.state.header} handler={this.getFormInput} />
+      <TvSeriesForm tvSeries={this.state.tvSeries} header='Insert TV Series' handler={this.getFormInput} />
     );
   }
 }
