@@ -2,6 +2,7 @@ import React from 'react';
 import Search from '../Search/search';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ManageTvSeries from '../ManageTvSeries/manage-tv-series';
+import Login from '../Login';
 import './main-menu.css';
 
 class MainMenu extends React.Component {
@@ -19,13 +20,17 @@ class MainMenu extends React.Component {
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav">
                 <li className="nav-item">
-                  <Link className="nav-link" to="/manage/">Manage </Link>
+                  <Link className="nav-link" to="/manage/">Manage</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/login/">Login</Link>
                 </li>
               </ul>
             </div>
           </nav>
           <Route path="/" exact component={Search} />
           <Route path="/manage/" component={ManageTvSeries} />
+          <Route path="/login/" component={Login} />
         </Router>
       </div>
     );

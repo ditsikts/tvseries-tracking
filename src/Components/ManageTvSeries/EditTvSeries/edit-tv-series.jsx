@@ -88,7 +88,6 @@ class EditTvSeries extends React.Component {
 
   getFormInput = (updatedTvSeries) => {
     this.submitForm(updatedTvSeries);
-
   }
 
   tabHandler = (action, id) => {
