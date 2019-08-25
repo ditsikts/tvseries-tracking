@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import AuthContext from '../Context/auth-context';
 
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = { username: '', password: '', isAuthenticated: false, open: false };
     }
+
+    static contextType = AuthContext;
 
     login = () => {
         const user = { userName: this.state.username, password: this.state.password };
@@ -17,6 +20,7 @@ class Login extends Component {
                 if (jwtToken !== null) {
                     sessionStorage.setItem("jwt", jwtToken);
                     this.setState({ isAuthenticated: true });
+                    this.context.login();
                 }
                 else {
                     this.setState({ open: true });
@@ -30,15 +34,18 @@ class Login extends Component {
     };
 
     render() {
-        const jwt = sessionStorage.getItem("jwt");
-        if (jwt) {
-            const base64Url = jwt.split('.')[1];
-            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            console.log(JSON.parse(jsonPayload));
-        }
+        console.log(this.context.authenticated);
+        
+
+        // const jwt = sessionStorage.getItem("jwt");
+        // if (jwt) {
+        //     const base64Url = jwt.split('.')[1];
+        //     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        //     const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        //         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        //     }).join(''));
+        //     console.log(JSON.parse(jsonPayload));
+        // }
 
         if (this.state.isAuthenticated === true) {
             return (<h1>Loggedin</h1>)
