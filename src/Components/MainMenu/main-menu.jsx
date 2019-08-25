@@ -7,17 +7,8 @@ import './main-menu.css';
 import AuthContext from '../../Context/auth-context';
 
 class MainMenu extends React.Component {
-  constructor () {
-    super()
-    this.state = {
-      authenticated:false
-    }
-  }
-  loginHandler = () => {
-    this.setState({ authenticated: true });
-    console.log("loginHandler");
-  };
 
+  static contextType = AuthContext;
   render() {
 
     
@@ -33,9 +24,10 @@ class MainMenu extends React.Component {
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav">
+                {this.context.authenticated ? 
                 <li className="nav-item">
                   <Link className="nav-link" to="/manage/">Manage</Link>
-                </li>
+                </li> : null }
                 <li className="nav-item">
                   <Link className="nav-link" to="/login/">Login</Link>
                 </li>
@@ -43,16 +35,10 @@ class MainMenu extends React.Component {
             </div>
           </nav>
           <Route path="/" exact component={Search} />
-          <AuthContext.Provider
-            value={{
-              authenticated: this.state.authenticated,
-              login: this.loginHandler
-            }}
-          >
+          
             <Route path="/manage/" component={ManageTvSeries} />
           
           <Route path="/login/" component={Login} />
-          </AuthContext.Provider>
         </Router>
       </div>
     );
