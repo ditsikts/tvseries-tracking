@@ -11,8 +11,8 @@ class MainMenu extends React.Component {
   static contextType = AuthContext;
   render() {
 
-    
-    
+
+
     //#04060F #03353E #0294A5 #A79C93 #C1403D
     return (
       <div className="container">
@@ -24,20 +24,27 @@ class MainMenu extends React.Component {
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav">
-                {this.context.authenticated ? 
-                <li className="nav-item">
-                  <Link className="nav-link" to="/manage/">Manage</Link>
-                </li> : null }
-                <li className="nav-item">
-                  <Link className="nav-link" to="/login/">Login</Link>
-                </li>
+                {this.context.authenticated ?
+                  <React.Fragment>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/manage/">Manage</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/">Logout</Link>
+                    </li>
+                  </React.Fragment>
+                  : null}
+                {!this.context.authenticated ?
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/login/">Login</Link>
+                  </li> : null}
               </ul>
             </div>
           </nav>
           <Route path="/" exact component={Search} />
-          
-            <Route path="/manage/" component={ManageTvSeries} />
-          
+
+          <Route path="/manage/" component={ManageTvSeries} />
+
           <Route path="/login/" component={Login} />
         </Router>
       </div>
