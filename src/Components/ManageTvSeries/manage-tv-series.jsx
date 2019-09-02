@@ -11,9 +11,9 @@ class ManageTvSeries extends React.Component {
 
   static contextType = AuthContext;
   render() {
-    if (!this.context.authenticated){
-      return <Redirect to="/" />
-    }
+    // if (!this.context.authenticated){
+    //   return <Redirect to="/" />
+    // }
 
     const style = {
       height: '5px'

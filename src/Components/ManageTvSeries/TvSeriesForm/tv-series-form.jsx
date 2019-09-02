@@ -57,7 +57,6 @@ class TvSeriesForm extends React.Component {
                 categories: categories
             };
         }
-        this.setState({ redirect: true });
         this.props.handler(tvSeries);
     }
 
