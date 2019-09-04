@@ -3,9 +3,9 @@ import './insert-tv-series.css';
 import TvSeriesForm from '../TvSeriesForm/tv-series-form';
 import { saveOrUpdateTvSeries } from '../../../Service/TvSeriesApi';
 
-class InsertTvSeries extends React.Component {
+const insertTvSeries = () => {
 
-  submitForm = (newTvSeries) => {
+  const submitForm = (newTvSeries) => {
     if (newTvSeries !== null) {
       saveOrUpdateTvSeries(newTvSeries)
         .then(data => {
@@ -16,12 +16,11 @@ class InsertTvSeries extends React.Component {
     }
   }
 
-  getFormInput = (newTvSeries) => {
-    this.submitForm(newTvSeries);
+  const getFormInput = (newTvSeries) => {
+    submitForm(newTvSeries);
 
   }
 
-  render() {
 
     return (
       <TvSeriesForm
@@ -30,13 +29,13 @@ class InsertTvSeries extends React.Component {
             id: '',
             title: '',
             status: '',
-            categories: [],
+            categories: []
           }
         }
         header='Insert TV Series'
-        handler={this.getFormInput} />
+        handler={getFormInput} />
     );
-  }
+  
 }
 
-export default InsertTvSeries;
+export default insertTvSeries;

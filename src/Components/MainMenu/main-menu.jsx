@@ -4,14 +4,8 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import ManageTvSeries from '../ManageTvSeries/manage-tv-series';
 import Login from '../Login';
 import './main-menu.css';
-import AuthContext from '../../Context/auth-context';
 
-class MainMenu extends React.Component {
-
-  static contextType = AuthContext;
-  render() {
-
-
+const mainMenu = () => {
 
     //#04060F #03353E #0294A5 #A79C93 #C1403D
     return (
@@ -24,7 +18,6 @@ class MainMenu extends React.Component {
             </button>
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav">
-                {this.context.authenticated ?
                   <React.Fragment>
                     <li className="nav-item">
                       <Link className="nav-link" to="/manage/">Manage</Link>
@@ -33,11 +26,9 @@ class MainMenu extends React.Component {
                       <Link className="nav-link" to="/">Logout</Link>
                     </li>
                   </React.Fragment>
-                  : null}
-                {!this.context.authenticated ?
                   <li className="nav-item">
                     <Link className="nav-link" to="/login/">Login</Link>
-                  </li> : null}
+                  </li> 
               </ul>
             </div>
           </nav>
@@ -49,7 +40,7 @@ class MainMenu extends React.Component {
         </Router>
       </div>
     );
-  }
+  
 }
 
-export default MainMenu;
+export default mainMenu;

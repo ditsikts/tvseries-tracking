@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './manage-tv-series.css';
 import InsertTvSeries from './InsertTvSeries/insert-tv-series';
 import EditTvSeries from './EditTvSeries/edit-tv-series';
-import { Redirect } from 'react-router-dom'
 import AuthContext from '../../Context/auth-context';
 
 class ManageTvSeries extends React.Component {
